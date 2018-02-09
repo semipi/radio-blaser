@@ -33,16 +33,16 @@
  * @author Dimas Abreu Dutra
  */
 
-#ifndef TICKETMESSAGES_H__
-#define TICKETMESSAGES_H__
+#ifndef RSSIDEMOMESSAGES_H__
+#define RSSIDEMOMESSAGES_H__
 
 enum {
   AM_RSSIMSG = 10
 };
 
-typedef nx_struct TicketMsg{
+typedef nx_struct RssiMsg{
   nx_int16_t rssi;
   nx_int16_t state;
-} TicketMsg;
+} RssiMsg;
 
-#endif //TICKETMESSAGES_H__
+#endif //RSSIDEMOMESSAGES_H__

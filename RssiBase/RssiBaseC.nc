@@ -1,5 +1,5 @@
 #include "ApplicationDefinitions.h"
-#include "TicketMessage.h"
+#include "RssiDemoMessages.h"
 
 module RssiBaseC {
   uses interface Boot;
@@ -94,7 +94,7 @@ module RssiBaseC {
 
   event bool RssiMsgIntercept.forward(message_t *msg, void *payload, uint8_t len) {
     if (state == LASER_OFF) {
-      TicketMsg *rssiMsg = (TicketMsg*) payload;
+      RssiMsg *rssiMsg = (RssiMsg*) payload;
       rssiMsg->rssi = getRssi(msg);
       rssiMsg->state = NONE;
       if (start_sent == 0) {
@@ -104,7 +104,7 @@ module RssiBaseC {
       }
     }
     if (state == LASER_ON && end_sent == 0) {
-      TicketMsg *rssiMsg = (TicketMsg*) payload;
+      RssiMsg *rssiMsg = (RssiMsg*) payload;
       rssiMsg->rssi = getRssi(msg);
       rssiMsg->state = END;
       start_sent = 0;

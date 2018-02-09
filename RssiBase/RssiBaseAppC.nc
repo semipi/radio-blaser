@@ -33,8 +33,7 @@
  * @author Dimas Abreu Dutra
  */
 
-// #include "RssiDemoMessages.h"
-#include "TicketMessage.h"
+#include "RssiDemoMessages.h"
 #include "message.h"
 
 configuration RssiBaseAppC {
