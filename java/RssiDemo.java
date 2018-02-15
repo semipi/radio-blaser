@@ -57,13 +57,14 @@ public class RssiDemo implements MessageListener {
   public RssiDemo(MoteIF moteIF) {
     this.moteIF = moteIF;
     this.moteIF.registerListener(new RssiMsg(), this);
+    System.out.println("COnstructor");
   }
     
   public void messageReceived(int to, Message message) {
     RssiMsg msg = (RssiMsg) message;
     int source = message.getSerialPacket().get_header_src();
     System.out.println("Rssi Message received from node " + source + 
-		       ": Rssi = " +  msg.get_rssi());
+		       ": Rssi = " +  msg.get_rssi() + ": State = " + msg.get_state());
   }
   
   private static void usage() {
@@ -95,6 +96,7 @@ public class RssiDemo implements MessageListener {
 
     MoteIF mif = new MoteIF(phoenix);
     RssiDemo serial = new RssiDemo(mif);
+    System.out.println("tra");
   }
 
 
