@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
     <appname>RssiBaseAppC</appname>
-    <platform>telosb</platform>
-    <username>paul</username>
     <hostname>pavlo-acer</hostname>
+    <timestamp>5A81DA88L</timestamp>
     <deluge_support>no</deluge_support>
     <userhash>3BFAE036L</userhash>
-    <uidhash>19FC1AAAL</uidhash>
-    <timestamp>5A7DC3F9L</timestamp>
+    <platform>telosb</platform>
+    <username>paul</username>
+    <uidhash>77B85473L</uidhash>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A8245BE18314000394A

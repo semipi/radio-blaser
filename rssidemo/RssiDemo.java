@@ -96,6 +96,4 @@ public class RssiDemo implements MessageListener {
     MoteIF mif = new MoteIF(phoenix);
     RssiDemo serial = new RssiDemo(mif);
   }
-
-
 }
