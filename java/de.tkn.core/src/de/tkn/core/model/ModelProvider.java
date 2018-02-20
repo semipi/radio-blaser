@@ -1,20 +1,10 @@
 package de.tkn.core.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public class ModelProvider<T extends Comparable<T>> {
-
-	private Set<T> values = new HashSet<>(); 
+public interface ModelProvider<T extends Comparable<T>> {
 	
+	public ModelProvider<T> add(final T t);
 	
-	public ModelProvider<T> add(T t) {
-		values.add(t);
-		return this;
-	}
+	public ModelProvider<T> clear();
 	
-	public ModelProvider<T> clear() {
-		values.clear();
-		return this;
-	}
+	public int size();
 }

@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
-    <hostname>pavlo-acer</hostname>
-    <timestamp>5A81DA9BL</timestamp>
-    <userhash>3BFAE036L</userhash>
-    <username>paul</username>
     <deluge_support>no</deluge_support>
-    <platform>telosb</platform>
-    <uidhash>25C77CC6L</uidhash>
     <appname>SendingMoteAppC</appname>
+    <hostname>kai-x201</hostname>
+    <uidhash>4B7ED573L</uidhash>
+    <username>kai</username>
+    <userhash>58EF928BL</userhash>
+    <timestamp>5A8B435FL</timestamp>
+    <platform>telosb</platform>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A82456C1231400039A2

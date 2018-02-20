@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 import de.tkn.core.api.Ticket;
 import de.tkn.core.api.rssi.RssiMessageTracker;
-import de.tkn.core.api.rssi.TicketProvider;
+import de.tkn.core.api.rssi.TicketConsumer;
 
 public class MonitorFrame extends JFrame {
 
@@ -29,7 +29,7 @@ public class MonitorFrame extends JFrame {
 
 	private RssiMessageTracker tracker;
 
-	private final TicketProvider provider = new TicketProvider();
+	private final TicketConsumer consumer = new TicketConsumer();
 	
 	private MonitorFrame() {
 		super("Radio-Blaser");
@@ -55,6 +55,10 @@ public class MonitorFrame extends JFrame {
 		
 		final GridBagConstraints left = new GridBagConstraints();
 		final JButton button = new JButton("Reset");
+		button.addActionListener(a -> {
+			
+		});
+		
 		panel.add(button, left);
 	}
 	
@@ -69,6 +73,9 @@ public class MonitorFrame extends JFrame {
 		final MonitorTableModel<Ticket> model = new MonitorTableModel<Ticket>(
 				new String[] { "Node id", "Avg. signal strength" },
 				(t, column) -> {
+					if(t == null) {
+						return null;
+					}
 					if(column == COLUMN_ID) {
 						return String.valueOf(t.getId());
 					} else if(column == COLUMN_AVG) {
@@ -83,7 +90,7 @@ public class MonitorFrame extends JFrame {
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.BLACK);
 		
-		provider.register(t -> model.add(t));
+		consumer.register(t -> model.add(t));
 		parent.add(scrollPane);
 		
 	}
@@ -105,7 +112,10 @@ public class MonitorFrame extends JFrame {
 		final JTextField input = new JTextField();
 		panel.add(input, right);
 		input.addActionListener(e -> {
-				tracker = new RssiMessageTracker(input.getText(), provider);
+			if(tracker != null) {
+				tracker.tearDown();
+			}
+			tracker = new RssiMessageTracker(input.getText(), consumer);
 		}); 
 	}
 

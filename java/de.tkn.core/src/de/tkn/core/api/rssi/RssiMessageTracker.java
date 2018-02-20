@@ -13,19 +13,23 @@ public class RssiMessageTracker implements MessageListener {
 	
 	private final MoteIF mif;
 	
-	private final Consumer<RssiMsg> provider;
+	private final Consumer<RssiMsg> consumer;
  
-	public RssiMessageTracker(final String source, final Consumer<RssiMsg> provider) {
+	public RssiMessageTracker(final String source, final Consumer<RssiMsg> consumer) {
 		final PhoenixSource phoenix = BuildSource.makePhoenix("serial@" + source + ":telosb", PrintStreamMessenger.err);
 		mif = new MoteIF(phoenix);
 		mif.registerListener(new RssiMsg(), this);
 		
-		this.provider = provider;
+		this.consumer = consumer;
 	}
 
 	@Override
 	public void messageReceived(final int arg0, final Message arg1) {
 		final RssiMsg message = (RssiMsg) arg1;
-		provider.add(message);
+		consumer.add(message);
+	}
+	
+	public void tearDown() {
+		mif.deregisterListener(new RssiMsg(), this);
 	}
 }

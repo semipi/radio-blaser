@@ -43,7 +43,7 @@ public class FixedHeap<T extends Comparable<T>> implements Heap<T> {
 		if (count < size) {
 			heap[count] = t;
 
-			if (t.compareTo(minValue) < 0) {
+			if (minValue == null || t.compareTo(minValue) < 0) {
 				minValue = t;
 				minIndex = count;
 			}

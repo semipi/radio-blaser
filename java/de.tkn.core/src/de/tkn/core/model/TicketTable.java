@@ -24,6 +24,19 @@ public class TicketTable implements Table<Ticket>{
 		return receivedMsgs.get(id).addValue(signal);
 	}
 
+	@Override
+	public Ticket lock(final Ticket t) {
+		assert t != null;
+		
+		final Integer id = t.getId();
+		
+		if(receivedMsgs.containsKey(id)) {
+			receivedMsgs.get(id).lock();
+		}
+		
+		return t;
+	}
+
 	private static class TicketInternal implements Ticket {
 		
 		private final Integer id;
@@ -32,15 +45,28 @@ public class TicketTable implements Table<Ticket>{
 		
 		private double signal = 0.0d;
 		
+		private boolean locked = false;
+		
 		private TicketInternal(final Integer id) {
 			this.id = id;
 		}
 
 		private TicketInternal addValue(final int signal) {
-			final double weighted = weight++ * this.signal;
-			this.signal = (weighted + signal) / weight;
-			
+			if(!locked) {
+				final double weighted = weight++ * this.signal;
+				this.signal = (weighted + signal) / weight;
+			}
 			return this;
+		}
+		
+		public TicketInternal lock() {
+			locked = true;
+			return this;
+		}
+		
+		@Override
+		public String toString() {
+			return String.valueOf(id) + "\t" + String.valueOf(signal);
 		}
 		
 		@Override
@@ -51,6 +77,8 @@ public class TicketTable implements Table<Ticket>{
 
 		@Override
 		public int compareTo(final Ticket o) {
+			assert o != null;
+			
 			if(signal < o.getAvgSignalStrength()) {
 				return -1;
 			}
@@ -66,6 +94,26 @@ public class TicketTable implements Table<Ticket>{
 		@Override
 		public double getAvgSignalStrength() {
 			return signal;
+		}
+		
+		@Override
+		public boolean equals(final Object obj) {
+			if(obj == null) {
+				return false;
+			}
+			if(this == obj) {
+				return true;
+			}
+			if(getClass() != obj.getClass()) {
+				return false;
+			}
+			
+			return id == ((TicketInternal) obj).id;
+		}
+		
+		@Override
+		public int hashCode() {
+			return id;
 		}
 	}
 }
