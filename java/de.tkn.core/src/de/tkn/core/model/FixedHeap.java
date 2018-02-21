@@ -15,7 +15,7 @@ public class FixedHeap<T extends Comparable<T>> implements Heap<T> {
 	private final T[] heap;
 
 	private T minValue;
-	
+	 
 	private int minIndex = 0;
 
 	@SuppressWarnings("unchecked")
@@ -37,7 +37,7 @@ public class FixedHeap<T extends Comparable<T>> implements Heap<T> {
 	}
 
 	@Override
-	public boolean insert(final T t) {
+	public synchronized boolean insert(final T t) {
 		assert t != null;
 
 		if (count < size) {

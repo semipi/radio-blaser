@@ -1,7 +1,7 @@
 package de.tkn.core.api;
 
 @FunctionalInterface
-public interface Consumer<T> {
+public interface Consumer<S, T> {
 
-	public void add(T t);
+	public void add(S s, T t);
 }

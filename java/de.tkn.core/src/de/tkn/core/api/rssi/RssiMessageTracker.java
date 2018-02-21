@@ -13,9 +13,9 @@ public class RssiMessageTracker implements MessageListener {
 	
 	private final MoteIF mif;
 	
-	private final Consumer<RssiMsg> consumer;
+	private final Consumer<RssiMessageTracker, RssiMsg> consumer;
  
-	public RssiMessageTracker(final String source, final Consumer<RssiMsg> consumer) {
+	public RssiMessageTracker(final String source, final Consumer<RssiMessageTracker, RssiMsg> consumer) {
 		final PhoenixSource phoenix = BuildSource.makePhoenix("serial@" + source + ":telosb", PrintStreamMessenger.err);
 		mif = new MoteIF(phoenix);
 		mif.registerListener(new RssiMsg(), this);
@@ -26,7 +26,7 @@ public class RssiMessageTracker implements MessageListener {
 	@Override
 	public void messageReceived(final int arg0, final Message arg1) {
 		final RssiMsg message = (RssiMsg) arg1;
-		consumer.add(message);
+		consumer.add(this, message);
 	}
 	
 	public void tearDown() {

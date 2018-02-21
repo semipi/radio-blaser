@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import de.tkn.core.api.Command;
 import de.tkn.core.api.Ticket;
 import de.tkn.core.api.rssi.RssiMessageTracker;
 import de.tkn.core.api.rssi.TicketConsumer;
@@ -27,9 +28,10 @@ public class MonitorFrame extends JFrame {
 	private static final int COLUMN_ID = 0;
 	private static final int COLUMN_AVG = 1;
 
-	private RssiMessageTracker tracker;
+	private RssiMessageTracker tracker0, tracker1;
 
 	private final TicketConsumer consumer = new TicketConsumer();
+	
 	
 	private MonitorFrame() {
 		super("Radio-Blaser");
@@ -40,7 +42,22 @@ public class MonitorFrame extends JFrame {
 		main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
 		createHeader(main);		
-		createConnectionLine(main);
+		
+		createConnectionLine(main, t -> {
+			if(tracker0 != null) {
+				tracker0.tearDown();
+			}	
+			consumer.update(tracker0, tracker0 = new RssiMessageTracker(t, consumer));
+	
+		});
+		
+		createConnectionLine(main, t -> {
+			if(tracker1 != null) {
+				tracker1.tearDown();
+			}			
+			consumer.update(tracker1, tracker1 = new RssiMessageTracker(t, consumer));
+		});
+		
 		createTable(main);
 		createFooter(main);
 		
@@ -95,7 +112,7 @@ public class MonitorFrame extends JFrame {
 		
 	}
 
-	private void createConnectionLine(final JPanel parent) {
+	private void createConnectionLine(final JPanel parent, final Command<String> command) {
 		final JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		parent.add(panel);
@@ -112,10 +129,7 @@ public class MonitorFrame extends JFrame {
 		final JTextField input = new JTextField();
 		panel.add(input, right);
 		input.addActionListener(e -> {
-			if(tracker != null) {
-				tracker.tearDown();
-			}
-			tracker = new RssiMessageTracker(input.getText(), consumer);
+			command.exec(input.getText());
 		}); 
 	}
 
