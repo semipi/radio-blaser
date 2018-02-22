@@ -1,13 +1,13 @@
 <tos_image>
   <ident>
-    <hostname>kai-x201</hostname>
+    <appname>RssiBaseAppC</appname>
+    <timestamp>5A8E8CF6L</timestamp>
     <deluge_support>no</deluge_support>
     <platform>telosb</platform>
-    <appname>RssiBaseAppC</appname>
-    <timestamp>5A8B2FE1L</timestamp>
-    <userhash>58EF928BL</userhash>
-    <username>kai</username>
-    <uidhash>81A0BBEBL</uidhash>
+    <userhash>3BFAE036L</userhash>
+    <hostname>pavlo-acer</hostname>
+    <uidhash>7A7E9046L</uidhash>
+    <username>paul</username>
   </ident>
   <image format="ihex">
 :104000005542200135D0085A8245BE18314000394A
