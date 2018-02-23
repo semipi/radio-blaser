@@ -13,9 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import de.tkn.core.api.Command;
 import de.tkn.core.api.Ticket;
-import de.tkn.core.api.rssi.RssiMessageTracker;
 import de.tkn.core.api.rssi.TicketConsumer;
 
 public class MonitorFrame extends JFrame {
@@ -28,10 +26,9 @@ public class MonitorFrame extends JFrame {
 	private static final int COLUMN_ID = 0;
 	private static final int COLUMN_AVG = 1;
 
-	private RssiMessageTracker tracker0, tracker1;
-
 	private final TicketConsumer consumer = new TicketConsumer();
 	
+	private final MonitorTableModel<Ticket> model;
 	
 	private MonitorFrame() {
 		super("Radio-Blaser");
@@ -43,22 +40,10 @@ public class MonitorFrame extends JFrame {
 
 		createHeader(main);		
 		
-		createConnectionLine(main, t -> {
-			if(tracker0 != null) {
-				tracker0.tearDown();
-			}	
-			consumer.update(tracker0, tracker0 = new RssiMessageTracker(t, consumer));
-	
-		});
+		createConnectionLine(main);
+		createConnectionLine(main);
 		
-		createConnectionLine(main, t -> {
-			if(tracker1 != null) {
-				tracker1.tearDown();
-			}			
-			consumer.update(tracker1, tracker1 = new RssiMessageTracker(t, consumer));
-		});
-		
-		createTable(main);
+		model = createTable(main);
 		createFooter(main);
 		
 		add(main);
@@ -73,7 +58,8 @@ public class MonitorFrame extends JFrame {
 		final GridBagConstraints left = new GridBagConstraints();
 		final JButton button = new JButton("Reset");
 		button.addActionListener(a -> {
-			
+			consumer.clear();
+			model.clear();
 		});
 		
 		panel.add(button, left);
@@ -86,7 +72,7 @@ public class MonitorFrame extends JFrame {
 		parent.add(header);
 	}
 	
-	private void createTable(final JPanel parent) {
+	private  MonitorTableModel<Ticket> createTable(final JPanel parent) {
 		final MonitorTableModel<Ticket> model = new MonitorTableModel<Ticket>(
 				new String[] { "Node id", "Avg. signal strength" },
 				(t, column) -> {
@@ -110,9 +96,10 @@ public class MonitorFrame extends JFrame {
 		consumer.register(t -> model.add(t));
 		parent.add(scrollPane);
 		
+		return model;	
 	}
 
-	private void createConnectionLine(final JPanel parent, final Command<String> command) {
+	private void createConnectionLine(final JPanel parent) {
 		final JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		parent.add(panel);
@@ -128,8 +115,10 @@ public class MonitorFrame extends JFrame {
 		right.gridwidth = GridBagConstraints.REMAINDER;
 		final JTextField input = new JTextField();
 		panel.add(input, right);
+		
 		input.addActionListener(e -> {
-			command.exec(input.getText());
+			input.setEnabled(false);
+			consumer.createNewTracker(input.getText());
 		}); 
 	}
 
