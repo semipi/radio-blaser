@@ -10,6 +10,12 @@ import de.tkn.core.model.FixedHeap;
 import de.tkn.core.model.RssiMsg;
 import de.tkn.core.model.StandardPrinter;
 
+/**
+ * Decides who is the winner of two independent games.
+ *
+ * @param <S>
+ * @param <T>
+ */
 public class Selector<S, T extends Comparable<T>> {
 	
 	public static final int HEAP_SIZE = 6;

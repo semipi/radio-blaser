@@ -10,6 +10,9 @@ import de.tkn.core.api.Ticket;
 import de.tkn.core.model.RssiMsg;
 import de.tkn.core.model.TicketTable;
 
+/**
+ * Consumes the ticket of the RssiMessageTracker.
+ */
 public class TicketConsumer implements Consumer<String, RssiMsg> {
 
 	private final Table<Ticket> table = new TicketTable();

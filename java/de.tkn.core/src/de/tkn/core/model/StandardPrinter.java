@@ -2,6 +2,11 @@ package de.tkn.core.model;
 
 import de.tkn.core.api.ConsolePrinter;
 
+/**
+ * @param <S>
+ * @param <T>
+ * @see ConsolePrinter
+ */
 public class StandardPrinter<S, T> implements ConsolePrinter<S, T>{
 
 	@Override

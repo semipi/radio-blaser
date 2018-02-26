@@ -9,6 +9,9 @@ import net.tinyos.packet.BuildSource;
 import net.tinyos.packet.PhoenixSource;
 import net.tinyos.util.PrintStreamMessenger;
 
+/**
+ * Wrapper for the ToS message tracker.
+ */
 public class RssiMessageTracker implements MessageListener {
 	
 	private final MoteIF mif;

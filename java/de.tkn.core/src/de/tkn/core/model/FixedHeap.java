@@ -4,6 +4,11 @@ import java.util.Iterator;
 
 import de.tkn.core.api.Heap;
 
+/**
+ *
+ * @param <T>
+ * @see Heap
+ */
 public class FixedHeap<T extends Comparable<T>> implements Heap<T> {
 
 	private final int ll;

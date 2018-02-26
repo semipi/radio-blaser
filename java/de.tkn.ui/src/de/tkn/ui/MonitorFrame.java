@@ -16,6 +16,9 @@ import javax.swing.JTextField;
 import de.tkn.core.api.Ticket;
 import de.tkn.core.api.rssi.TicketConsumer;
 
+/**
+ * Main UI 
+ */
 public class MonitorFrame extends JFrame {
 
 	/**
