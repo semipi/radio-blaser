@@ -6,7 +6,6 @@ module RssiBaseC {
   uses interface Intercept as RssiMsgIntercept;
   uses interface Timer<TMilli> as LaserTimer;
   uses interface Read<uint16_t> as LaserSensor;
-  uses interface ReadStream<uint16_t> as LaserSensorStream;
 
 #ifdef __CC2420_H__
   uses interface CC2420Packet;
@@ -19,15 +18,12 @@ module RssiBaseC {
 
   enum {
     LASER_ON,
-    ALARM,
     LASER_OFF,
   };
 
   enum {
     LASER_SENSING_PERIOD = 100, // ms
     LASER_THRESHOLD = 1000,
-    STREAM_SAMPLE_SIZE = 10,
-    LASER_SENSING_TIME = 1000, // us
   };
 
   enum {
@@ -36,8 +32,6 @@ module RssiBaseC {
     END = 2,
   };
 
-  uint16_t laser_samples[STREAM_SAMPLE_SIZE];
-
   int state = LASER_ON;
   int msg_state = NONE;
 
@@ -45,21 +39,6 @@ module RssiBaseC {
   int end_sent = 1;
 
   uint16_t getRssi(message_t *msg);
-
-  task void checkLaser() {
-    uint16_t sum = 0;
-    uint16_t avg;
-    int i;
-    for (i = 0; i < STREAM_SAMPLE_SIZE; i++) {
-      sum =+ laser_samples[i];
-    }
-    avg = sum / STREAM_SAMPLE_SIZE;
-    if (avg < LASER_THRESHOLD) {
-      state = LASER_OFF;
-    } else {
-      state = LASER_ON;
-    }
-  }
 
   event void Boot.booted() {
     call LaserTimer.startPeriodic(LASER_SENSING_PERIOD);
@@ -74,21 +53,10 @@ module RssiBaseC {
       if (val < LASER_THRESHOLD) {
         state = LASER_OFF;
         msg_state = START;
-        // state = ALARM;
-        // call LaserSensorStream.postBuffer(laser_samples, STREAM_SAMPLE_SIZE);
-        // call LaserSensorStream.read(LASER_SENSING_TIME);
       } else {
         state = LASER_ON;
         msg_state = END;
       }
-    }
-  }
-  
-  event void LaserSensorStream.bufferDone(error_t ok, uint16_t *buf,uint16_t count) {}
-
-  event void LaserSensorStream.readDone(error_t ok, uint32_t usActualPeriod) {
-    if (ok == SUCCESS) {
-      post checkLaser();
     }
   }
 
